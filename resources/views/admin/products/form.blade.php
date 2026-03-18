@@ -24,8 +24,8 @@
                       x-data="{
                           variants: {{ json_encode(
                               isset($product)
-                                  ? $product->variants->map(fn($v) => ['id' => $v->id, 'wall_thickness' => $v->wall_thickness, 'quality' => $v->quality, 'low_stock_threshold' => $v->low_stock_threshold])->values()
-                                  : old('variants', [['id' => null, 'wall_thickness' => '', 'quality' => '', 'low_stock_threshold' => 0]])
+                                  ? $product->variants->map(fn($v) => ['id' => $v->id, 'wall_thickness' => $v->wall_thickness, 'quality' => $v->quality, 'drawer' => $v->drawer, 'low_stock_threshold' => $v->low_stock_threshold])->values()
+                                  : old('variants', [['id' => null, 'wall_thickness' => '', 'quality' => '', 'drawer' => '', 'low_stock_threshold' => 0]])
                           ) }}
                       }">
                     @csrf
@@ -70,7 +70,7 @@
                         <div>
                             <div class="flex items-center justify-between mb-3">
                                 <label class="block text-sm font-medium text-gray-700">Varianten</label>
-                                <button type="button" @click="variants.push({ id: null, wall_thickness: '', quality: '', low_stock_threshold: 0 })" class="inline-flex items-center px-3 py-1 border border-gray-300 rounded-md text-xs font-medium text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-1">
+                                <button type="button" @click="variants.push({ id: null, wall_thickness: '', quality: '', drawer: '', low_stock_threshold: 0 })" class="inline-flex items-center px-3 py-1 border border-gray-300 rounded-md text-xs font-medium text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-1">
                                     + Variant toevoegen
                                 </button>
                             </div>
@@ -86,6 +86,15 @@
                                         <div class="flex-1">
                                             <label :for="'variant_quality_' + index" class="block text-xs font-medium text-gray-500">Kwaliteit</label>
                                             <input type="text" :name="'variants[' + index + '][quality]'" :id="'variant_quality_' + index" x-model="variant.quality" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 text-sm" placeholder="bijv. S235" />
+                                        </div>
+                                        <div class="w-24">
+                                            <label :for="'variant_drawer_' + index" class="block text-xs font-medium text-gray-500">Vak</label>
+                                            <select :name="'variants[' + index + '][drawer]'" :id="'variant_drawer_' + index" x-model="variant.drawer" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 text-sm">
+                                                <option value="">-</option>
+                                                <template x-for="i in 20">
+                                                    <option :value="i" x-text="'Vak ' + i" :selected="variant.drawer == i"></option>
+                                                </template>
+                                            </select>
                                         </div>
                                         <div class="w-24">
                                             <label :for="'variant_threshold_' + index" class="block text-xs font-medium text-gray-500">Min. voorraad</label>

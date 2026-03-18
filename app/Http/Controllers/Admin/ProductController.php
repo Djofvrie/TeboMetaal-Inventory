@@ -37,6 +37,7 @@ class ProductController extends Controller
             'variants.*.wall_thickness' => 'required|numeric|min:0',
             'variants.*.quality' => 'nullable|string|max:255',
             'variants.*.low_stock_threshold' => 'nullable|integer|min:0',
+            'variants.*.drawer' => 'nullable|integer|min:1|max:20',
         ]);
 
         return DB::transaction(function () use ($validated) {
@@ -52,6 +53,7 @@ class ProductController extends Controller
                     $product->variants()->create([
                         'wall_thickness' => $variantData['wall_thickness'],
                         'quality' => $variantData['quality'] ?? null,
+                        'drawer' => $variantData['drawer'] ?? null,
                         'low_stock_threshold' => $variantData['low_stock_threshold'] ?? 0,
                     ]);
                 }

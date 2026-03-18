@@ -49,21 +49,33 @@
                         <dt class="text-gray-500 text-xs uppercase tracking-wide">Kwaliteit</dt>
                         <dd class="font-semibold text-gray-900 mt-1">{{ $variant->quality ?: '-' }}</dd>
                     </div>
+                    <div class="bg-gray-50 rounded-lg p-3">
+                        <dt class="text-gray-500 text-xs uppercase tracking-wide">Vak</dt>
+                        <dd class="font-semibold text-gray-900 mt-1">{{ $variant->drawer ? 'Vak ' . $variant->drawer : '-' }}</dd>
+                    </div>
                 </dl>
 
                 {{-- Low stock threshold --}}
-                <form method="POST" action="{{ route('admin.stock.threshold', $variant) }}" class="mt-4 pt-4 border-t border-gray-200 flex items-end gap-3">
+                <form method="POST" action="{{ route('admin.stock.settings', $variant) }}" class="mt-4 pt-4 border-t border-gray-200 flex flex-wrap items-end gap-3">
                     @csrf
                     @method('PUT')
                     <div>
-                        <label for="low_stock_threshold" class="block text-xs text-gray-500 uppercase tracking-wide mb-1">Lage voorraad drempel</label>
+                        <label for="drawer" class="block text-xs text-gray-500 uppercase tracking-wide mb-1">Vak</label>
+                        <select name="drawer" id="drawer" class="w-28 rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 text-sm">
+                            <option value="">-</option>
+                            @for($i = 1; $i <= 20; $i++)
+                                <option value="{{ $i }}" {{ $variant->drawer == $i ? 'selected' : '' }}>Vak {{ $i }}</option>
+                            @endfor
+                        </select>
+                    </div>
+                    <div>
+                        <label for="low_stock_threshold" class="block text-xs text-gray-500 uppercase tracking-wide mb-1">Min. voorraad</label>
                         <input type="number" name="low_stock_threshold" id="low_stock_threshold" value="{{ $variant->low_stock_threshold }}" min="0"
                                class="w-28 rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 text-sm">
                     </div>
                     <button type="submit" class="inline-flex items-center px-3 py-2 text-xs font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 transition">
                         Opslaan
                     </button>
-                    <p class="text-xs text-gray-400">Melding op dashboard als voorraad &le; deze waarde</p>
                 </form>
             </div>
 

@@ -8,7 +8,7 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class ProductVariant extends Model
 {
-    protected $fillable = ['product_id', 'wall_thickness', 'quality', 'low_stock_threshold'];
+    protected $fillable = ['product_id', 'wall_thickness', 'quality', 'drawer', 'low_stock_threshold'];
 
     protected $casts = [
         'wall_thickness' => 'decimal:1',

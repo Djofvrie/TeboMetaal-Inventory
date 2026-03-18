@@ -38,7 +38,7 @@ Route::middleware(['auth'])->prefix('admin')->name('admin.')->group(function () 
     Route::get('/stock/{variant}/edit', [StockController::class, 'edit'])->name('stock.edit');
     Route::put('/stock/{variant}', [StockController::class, 'update'])->name('stock.update');
     Route::post('/stock/{variant}/inventory', [StockController::class, 'inventory'])->name('stock.inventory');
-    Route::put('/stock/{variant}/threshold', [StockController::class, 'threshold'])->name('stock.threshold');
+    Route::put('/stock/{variant}/settings', [StockController::class, 'settings'])->name('stock.settings');
     Route::get('/import', [StockController::class, 'importForm'])->name('stock.import');
     Route::post('/import', [StockController::class, 'import'])->name('stock.import.process');
     Route::get('/mutaties', [MutationController::class, 'index'])->name('mutations.index');

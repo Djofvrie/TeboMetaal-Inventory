@@ -229,15 +229,16 @@ class StockController extends Controller
         });
     }
 
-    public function threshold(Request $request, ProductVariant $variant)
+    public function settings(Request $request, ProductVariant $variant)
     {
         $validated = $request->validate([
+            'drawer' => 'nullable|integer|min:1|max:20',
             'low_stock_threshold' => 'required|integer|min:0',
         ]);
 
         $variant->update($validated);
 
-        return back()->with('success', 'Drempel opgeslagen.');
+        return back()->with('success', 'Instellingen opgeslagen.');
     }
 
     public function importForm()

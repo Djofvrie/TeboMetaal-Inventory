@@ -22,6 +22,9 @@
                 <span class="bg-slate-100 px-3 py-1 rounded-full text-slate-600">Wanddikte: <strong>{{ str_replace('.', ',', $variant->wall_thickness) }} mm</strong></span>
                 @endif
                 <span class="bg-slate-100 px-3 py-1 rounded-full text-slate-600">Kwaliteit: <strong>{{ $variant->quality }}</strong></span>
+                @if($variant->drawer)
+                <span class="bg-indigo-50 px-3 py-1 rounded-full text-indigo-700">Vak: <strong>{{ $variant->drawer }}</strong></span>
+                @endif
             </div>
         </div>
 
