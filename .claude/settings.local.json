@@ -1,0 +1,27 @@
+{
+  "permissions": {
+    "allow": [
+      "Read(//Users/geoffrey/Documents/Klanten/Tebo/**)",
+      "Bash(composer create-project:*)",
+      "Bash(cd:*)",
+      "Bash(mysql:*)",
+      "Bash(brew services:*)",
+      "Bash('/Users/geoffrey/Library/Application Support/Herd/bin/mysqld' --version)",
+      "Read(//Users/geoffrey/Library/Application Support/Herd/**)",
+      "Bash(composer require:*)",
+      "Bash(php artisan:*)",
+      "Bash(find:*)",
+      "Bash(npm run:*)",
+      "Bash(curl:*)",
+      "Bash(pkill:*)",
+      "Bash(truncate:*)",
+      "Bash(composer run:*)",
+      "Bash(python3:*)",
+      "Bash(grep -o 'rgb\\([^\\)]*\\)\\\\|#[0-9a-fA-F]\\\\{3,6\\\\}' public/images/logo.svg)",
+      "Bash(git init:*)",
+      "Bash(git remote:*)",
+      "Bash(git branch:*)",
+      "Bash(git add:*)"
+    ]
+  }
+}
