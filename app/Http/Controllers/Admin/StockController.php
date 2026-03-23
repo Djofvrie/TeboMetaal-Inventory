@@ -24,12 +24,15 @@ class StockController extends Controller
         $totalLengthM = round($totalLengthMm / 1000, 1);
         $totalPieces = StockItem::sum('quantity');
 
-        // Low stock: variants where total quantity <= threshold
-        $lowStockVariants = ProductVariant::with(['product.category'])
-            ->withSum('stockItems', 'quantity')
+        // Low stock: variants where total meters on stock <= threshold (in meters)
+        $lowStockVariants = ProductVariant::with(['product.category', 'stockItems'])
             ->get()
-            ->filter(fn ($v) => ($v->stock_items_sum_quantity ?? 0) <= $v->low_stock_threshold)
-            ->sortBy('stock_items_sum_quantity')
+            ->map(function ($v) {
+                $v->total_meters = round($v->stockItems->sum(fn ($i) => $i->length_mm * $i->quantity) / 1000, 1);
+                return $v;
+            })
+            ->filter(fn ($v) => $v->total_meters <= $v->low_stock_threshold)
+            ->sortBy('total_meters')
             ->take(50);
 
         // Recent mutations
@@ -227,6 +230,25 @@ class StockController extends Controller
 
             return back()->with('success', 'Inventarisatie opgeslagen.');
         });
+    }
+
+    public function resetAll()
+    {
+        DB::transaction(function () {
+            StockItem::query()->delete();
+
+            StockMutation::create([
+                'product_variant_id' => ProductVariant::first()?->id,
+                'type' => 'inventory',
+                'length_mm' => 0,
+                'quantity' => 0,
+                'note' => 'Alle voorraad op nul gezet',
+                'user_id' => auth()->id(),
+            ]);
+        });
+
+        return redirect()->route('admin.dashboard')
+            ->with('success', 'Alle voorraad is op nul gezet. Alle producten en varianten zijn behouden.');
     }
 
     public function settings(Request $request, ProductVariant $variant)

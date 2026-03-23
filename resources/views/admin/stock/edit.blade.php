@@ -69,9 +69,10 @@
                         </select>
                     </div>
                     <div>
-                        <label for="low_stock_threshold" class="block text-xs text-gray-500 uppercase tracking-wide mb-1">Min. voorraad</label>
+                        <label for="low_stock_threshold" class="block text-xs text-gray-500 uppercase tracking-wide mb-1">Min. meters</label>
                         <input type="number" name="low_stock_threshold" id="low_stock_threshold" value="{{ $variant->low_stock_threshold }}" min="0"
-                               class="w-28 rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 text-sm">
+                               class="w-28 rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 text-sm"
+                               title="Melding bij minder dan dit aantal meters op voorraad">
                     </div>
                     <button type="submit" class="inline-flex items-center px-3 py-2 text-xs font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 transition">
                         Opslaan

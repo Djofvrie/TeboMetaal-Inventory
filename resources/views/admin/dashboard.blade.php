@@ -55,6 +55,12 @@
                     <a href="{{ route('admin.mutations.index') }}" class="inline-flex items-center px-4 py-2 bg-gray-600 border border-transparent rounded-md font-semibold text-xs text-white uppercase tracking-widest hover:bg-gray-700 transition">
                         Mutatielog
                     </a>
+                    <form method="POST" action="{{ route('admin.stock.reset-all') }}" class="inline" onsubmit="return confirm('LET OP: Dit zet ALLE voorraad op nul. Alle producten en varianten blijven behouden. Weet je het zeker?')">
+                        @csrf
+                        <button type="submit" class="inline-flex items-center px-4 py-2 bg-red-600 border border-transparent rounded-md font-semibold text-xs text-white uppercase tracking-widest hover:bg-red-700 transition">
+                            Alle voorraad op nul
+                        </button>
+                    </form>
                     <a href="{{ route('home') }}" class="inline-flex items-center px-4 py-2 bg-amber-600 border border-transparent rounded-md font-semibold text-xs text-white uppercase tracking-widest hover:bg-amber-700 transition">
                         Publieke pagina
                     </a>
@@ -65,7 +71,7 @@
             <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg p-6">
                 <h3 class="text-lg font-semibold text-gray-900 mb-4 flex items-center">
                     <span class="inline-block w-3 h-3 bg-amber-500 rounded-full mr-2"></span>
-                    Lage voorraad (minder dan 2 stuks)
+                    Lage voorraad (op basis van totale meters)
                 </h3>
 
                 @if ($lowStockVariants->count() > 0)
@@ -77,20 +83,20 @@
                                     <th class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Product</th>
                                     <th class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Wanddikte</th>
                                     <th class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Kwaliteit</th>
-                                    <th class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Stuks</th>
+                                    <th class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Meters</th>
                                     <th class="px-4 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">Actie</th>
                                 </tr>
                             </thead>
                             <tbody class="bg-white divide-y divide-gray-200">
                                 @foreach ($lowStockVariants as $variant)
-                                    <tr class="{{ ($variant->stock_items_sum_quantity ?? 0) == 0 ? 'bg-red-50' : 'bg-amber-50' }}">
+                                    <tr class="{{ $variant->total_meters == 0 ? 'bg-red-50' : 'bg-amber-50' }}">
                                         <td class="px-4 py-3">{{ $variant->product->category->name }}</td>
                                         <td class="px-4 py-3 font-medium">{{ $variant->product->name }}</td>
                                         <td class="px-4 py-3">{{ str_replace('.', ',', $variant->wall_thickness) }} mm</td>
                                         <td class="px-4 py-3">{{ $variant->quality ?: '-' }}</td>
                                         <td class="px-4 py-3">
-                                            <span class="inline-flex items-center px-2 py-0.5 rounded text-xs font-medium {{ ($variant->stock_items_sum_quantity ?? 0) == 0 ? 'bg-red-100 text-red-800' : 'bg-amber-100 text-amber-800' }}">
-                                                {{ $variant->stock_items_sum_quantity ?? 0 }}
+                                            <span class="inline-flex items-center px-2 py-0.5 rounded text-xs font-medium {{ $variant->total_meters == 0 ? 'bg-red-100 text-red-800' : 'bg-amber-100 text-amber-800' }}">
+                                                {{ str_replace('.', ',', $variant->total_meters) }} m
                                             </span>
                                         </td>
                                         <td class="px-4 py-3 text-right">

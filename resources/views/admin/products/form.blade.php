@@ -60,10 +60,11 @@
                             <p class="mt-1 text-xs text-gray-500">Bijv. 40x40, 60x40, 100x50</p>
                         </div>
 
-                        <!-- Sort order -->
+                        <!-- Sort order (optional, auto-calculated from dimension if empty) -->
                         <div>
                             <label for="sort_order" class="block text-sm font-medium text-gray-700">Sorteervolgorde</label>
-                            <input type="number" name="sort_order" id="sort_order" value="{{ old('sort_order', $product->sort_order ?? 0) }}" class="mt-1 block w-24 rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 text-sm" min="0" />
+                            <input type="number" name="sort_order" id="sort_order" value="{{ old('sort_order', isset($product) ? $product->sort_order : '') }}" class="mt-1 block w-24 rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 text-sm" min="0" placeholder="Auto" />
+                            <p class="mt-1 text-xs text-gray-500">Laat leeg om automatisch op afmeting te sorteren</p>
                         </div>
 
                         <!-- Variants -->
@@ -97,7 +98,7 @@
                                             </select>
                                         </div>
                                         <div class="w-24">
-                                            <label :for="'variant_threshold_' + index" class="block text-xs font-medium text-gray-500">Min. voorraad</label>
+                                            <label :for="'variant_threshold_' + index" class="block text-xs font-medium text-gray-500">Min. meters</label>
                                             <input type="number" :name="'variants[' + index + '][low_stock_threshold]'" :id="'variant_threshold_' + index" x-model="variant.low_stock_threshold" min="0" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 text-sm" placeholder="0" />
                                         </div>
                                         <div class="pt-5">
