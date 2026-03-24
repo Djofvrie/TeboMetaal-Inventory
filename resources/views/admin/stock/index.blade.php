@@ -18,9 +18,7 @@
                     <div x-data="{ open: false }" class="bg-white overflow-hidden shadow-sm sm:rounded-lg">
                         <button @click="open = !open" class="w-full px-6 py-4 flex items-center justify-between text-left hover:bg-gray-50 transition">
                             <div class="flex items-center space-x-3">
-                                @if ($category->icon)
-                                    <span class="text-2xl">{{ $category->icon }}</span>
-                                @endif
+                                <span class="w-6 h-6 text-gray-700"><x-category-icon :slug="$category->slug" /></span>
                                 <h3 class="text-lg font-semibold text-gray-900">{{ $category->name }}</h3>
                                 <span class="text-sm text-gray-500">({{ $category->products->count() }} producten)</span>
                             </div>
