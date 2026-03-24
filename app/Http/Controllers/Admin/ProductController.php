@@ -41,14 +41,11 @@ class ProductController extends Controller
         ]);
 
         return DB::transaction(function () use ($validated) {
-            // Auto-calculate sort_order from dimension if not explicitly set
-            $sortOrder = $validated['sort_order'] ?? $this->calculateSortOrder($validated['dimension']);
-
             $product = Product::create([
                 'category_id' => $validated['category_id'],
                 'name' => $validated['name'],
                 'dimension' => $validated['dimension'],
-                'sort_order' => $sortOrder,
+                'sort_order' => $validated['sort_order'] ?? 0,
             ]);
 
             if (!empty($validated['variants'])) {
@@ -154,31 +151,5 @@ class ProductController extends Controller
 
         return redirect()->route('admin.products.index')
             ->with('success', 'Product verwijderd.');
-    }
-
-    /**
-     * Calculate sort_order from dimension string (e.g. "60x40" → 6040, "100x50" → 10050).
-     * This ensures products are automatically sorted by size.
-     */
-    private function calculateSortOrder(string $dimension): int
-    {
-        // Extract all numbers from the dimension string
-        preg_match_all('/(\d+)/', $dimension, $matches);
-        $numbers = $matches[1] ?? [];
-
-        if (empty($numbers)) {
-            return 0;
-        }
-
-        // Sort numbers descending so the largest dimension comes first
-        $sorted = collect($numbers)->map(fn ($n) => (int) $n)->sortDesc()->values();
-
-        // Create a composite sort value: first number * 1000 + second number
-        $sortOrder = $sorted[0] * 1000;
-        if (isset($sorted[1])) {
-            $sortOrder += $sorted[1];
-        }
-
-        return $sortOrder;
     }
 }
