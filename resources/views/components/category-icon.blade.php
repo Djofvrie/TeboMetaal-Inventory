@@ -56,33 +56,34 @@
         </svg>
         @break
     @case('hea')
-        {{-- HEA breed-flens I-profiel (H-balk) --}}
-        <svg viewBox="0 0 64 64" fill="none" stroke="currentColor" stroke-width="2.5" class="w-full h-full">
-            <path d="M12 8h40M12 56h40" stroke-width="4"/>
-            <line x1="32" y1="8" x2="32" y2="56" stroke-width="4"/>
-            <line x1="12" y1="8" x2="12" y2="56" stroke-width="1" stroke-dasharray="2 4"/>
-            <line x1="52" y1="8" x2="52" y2="56" stroke-width="1" stroke-dasharray="2 4"/>
+        {{-- HEA breed-flens H-profiel: brede flenzen, korte lijf --}}
+        <svg viewBox="0 0 64 64" fill="currentColor" class="w-full h-full">
+            <rect x="8" y="6" width="48" height="8"/>
+            <rect x="8" y="50" width="48" height="8"/>
+            <rect x="26" y="14" width="12" height="36"/>
         </svg>
         @break
     @case('ipe')
-        {{-- IPE smal-flens I-profiel --}}
-        <svg viewBox="0 0 64 64" fill="none" stroke="currentColor" stroke-width="2.5" class="w-full h-full">
-            <path d="M16 8h32M16 56h32" stroke-width="4"/>
-            <line x1="32" y1="8" x2="32" y2="56" stroke-width="3"/>
+        {{-- IPE smal-flens I-profiel: smallere flenzen, hoger lijf --}}
+        <svg viewBox="0 0 64 64" fill="currentColor" class="w-full h-full">
+            <rect x="14" y="6" width="36" height="6"/>
+            <rect x="14" y="52" width="36" height="6"/>
+            <rect x="27" y="12" width="10" height="40"/>
         </svg>
         @break
     @case('t-profiel')
-        {{-- T-profiel --}}
-        <svg viewBox="0 0 64 64" fill="none" stroke="currentColor" stroke-width="2.5" class="w-full h-full">
-            <path d="M8 8h48" stroke-width="4"/>
-            <line x1="32" y1="8" x2="32" y2="56" stroke-width="4"/>
+        {{-- T-profiel: flens bovenaan, lijf naar beneden --}}
+        <svg viewBox="0 0 64 64" fill="currentColor" class="w-full h-full">
+            <rect x="8" y="8" width="48" height="8"/>
+            <rect x="26" y="16" width="12" height="40"/>
         </svg>
         @break
     @case('u-profiel')
-        {{-- U-profiel (kanaal) --}}
-        <svg viewBox="0 0 64 64" fill="none" stroke="currentColor" stroke-width="2.5" class="w-full h-full">
-            <path d="M16 8v48h32v-48" stroke-width="4" fill="none"/>
-            <path d="M24 8v40h16v-40" stroke-width="1" stroke-dasharray="2 3"/>
+        {{-- U-profiel: open kanaal naar boven --}}
+        <svg viewBox="0 0 64 64" fill="currentColor" class="w-full h-full">
+            <rect x="8" y="8" width="12" height="48"/>
+            <rect x="44" y="8" width="12" height="48"/>
+            <rect x="8" y="48" width="48" height="8"/>
         </svg>
         @break
     @default
