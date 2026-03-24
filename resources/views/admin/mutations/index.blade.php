@@ -71,6 +71,7 @@
                                 <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Aantal</th>
                                 <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Notitie</th>
                                 <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Gebruiker</th>
+                                <th class="px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">Actie</th>
                             </tr>
                         </thead>
                         <tbody class="bg-white divide-y divide-gray-200">
@@ -121,10 +122,20 @@
                                     <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
                                         {{ $mutation->user->name ?? '-' }}
                                     </td>
+                                    <td class="px-6 py-4 whitespace-nowrap text-right text-sm">
+                                        @if ($mutation->variant)
+                                            <form method="POST" action="{{ route('admin.mutations.revert', $mutation) }}" class="inline" onsubmit="return confirm('Weet je zeker dat je deze mutatie ongedaan wilt maken?')">
+                                                @csrf
+                                                <button type="submit" class="text-amber-600 hover:text-amber-900 font-medium">
+                                                    Ongedaan maken
+                                                </button>
+                                            </form>
+                                        @endif
+                                    </td>
                                 </tr>
                             @empty
                                 <tr>
-                                    <td colspan="8" class="px-6 py-4 text-center text-sm text-gray-500">
+                                    <td colspan="9" class="px-6 py-4 text-center text-sm text-gray-500">
                                         Geen mutaties gevonden.
                                     </td>
                                 </tr>

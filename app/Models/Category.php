@@ -12,6 +12,7 @@ class Category extends Model
     public function products(): HasMany
     {
         return $this->hasMany(Product::class)
-            ->orderByRaw("CAST(dimension AS INTEGER) ASC, dimension ASC");
+            ->orderByRaw("CAST(dimension AS INTEGER) ASC")
+            ->orderByRaw("CAST(CASE WHEN INSTR(dimension, 'x') > 0 THEN SUBSTR(dimension, INSTR(dimension, 'x') + 1) ELSE '0' END AS INTEGER) ASC");
     }
 }

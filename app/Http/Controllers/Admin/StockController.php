@@ -31,7 +31,7 @@ class StockController extends Controller
                 $v->total_meters = round($v->stockItems->sum(fn ($i) => $i->length_mm * $i->quantity) / 1000, 1);
                 return $v;
             })
-            ->filter(fn ($v) => $v->total_meters <= $v->low_stock_threshold)
+            ->filter(fn ($v) => $v->low_stock_threshold > 0 && $v->total_meters <= $v->low_stock_threshold)
             ->sortBy('total_meters')
             ->take(50);
 

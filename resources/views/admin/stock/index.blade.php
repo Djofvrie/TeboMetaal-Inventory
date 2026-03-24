@@ -15,7 +15,7 @@
 
             <div class="space-y-6">
                 @forelse ($categories as $category)
-                    <div x-data="{ open: true }" class="bg-white overflow-hidden shadow-sm sm:rounded-lg">
+                    <div x-data="{ open: false }" class="bg-white overflow-hidden shadow-sm sm:rounded-lg">
                         <button @click="open = !open" class="w-full px-6 py-4 flex items-center justify-between text-left hover:bg-gray-50 transition">
                             <div class="flex items-center space-x-3">
                                 @if ($category->icon)
@@ -32,12 +32,7 @@
                         <div x-show="open" x-transition:enter="transition ease-out duration-200" x-transition:enter-start="opacity-0 -translate-y-2" x-transition:enter-end="opacity-100 translate-y-0" x-transition:leave="transition ease-in duration-150" x-transition:leave-start="opacity-100 translate-y-0" x-transition:leave-end="opacity-0 -translate-y-2" class="border-t border-gray-200">
                             @forelse ($category->products as $product)
                                 <div class="px-6 py-4 {{ !$loop->last ? 'border-b border-gray-100' : '' }}">
-                                    <h4 class="font-medium text-gray-900">
-                                        {{ $product->name }}
-                                        @if ($product->dimension)
-                                            <span class="text-sm text-gray-500">{{ $product->dimension }}</span>
-                                        @endif
-                                    </h4>
+                                    <h4 class="font-medium text-gray-900">{{ $product->name }}</h4>
 
                                     @if ($product->variants->count() > 0)
                                         <div class="mt-2 overflow-x-auto">

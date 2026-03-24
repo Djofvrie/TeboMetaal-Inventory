@@ -43,6 +43,7 @@ Route::middleware(['auth'])->prefix('admin')->name('admin.')->group(function () 
     Route::get('/import', [StockController::class, 'importForm'])->name('stock.import');
     Route::post('/import', [StockController::class, 'import'])->name('stock.import.process');
     Route::get('/mutaties', [MutationController::class, 'index'])->name('mutations.index');
+    Route::post('/mutaties/{mutation}/revert', [MutationController::class, 'revert'])->name('mutations.revert');
     Route::resource('users', UserController::class)->except(['show']);
 });
 
