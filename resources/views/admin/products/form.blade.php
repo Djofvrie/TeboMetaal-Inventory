@@ -26,7 +26,15 @@
                               isset($product)
                                   ? $product->variants->map(fn($v) => ['id' => $v->id, 'wall_thickness' => $v->wall_thickness, 'quality' => $v->quality, 'drawer' => $v->drawer, 'low_stock_threshold' => $v->low_stock_threshold])->values()
                                   : old('variants', [['id' => null, 'wall_thickness' => '', 'quality' => '', 'drawer' => '', 'low_stock_threshold' => 0]])
-                          ) }}
+                          ) }},
+                          removedVariants: [],
+                          removeVariant(index) {
+                              const variant = this.variants[index];
+                              if (variant.id) {
+                                  this.removedVariants.push(variant.id);
+                              }
+                              this.variants.splice(index, 1);
+                          }
                       }">
                     @csrf
                     @if (isset($product))
@@ -58,13 +66,6 @@
                             <label for="dimension" class="block text-sm font-medium text-gray-700">Afmeting</label>
                             <input type="text" name="dimension" id="dimension" value="{{ old('dimension', $product->dimension ?? '') }}" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 text-sm" required />
                             <p class="mt-1 text-xs text-gray-500">Bijv. 40x40, 60x40, 100x50</p>
-                        </div>
-
-                        <!-- Sort order (optional, auto-calculated from dimension if empty) -->
-                        <div>
-                            <label for="sort_order" class="block text-sm font-medium text-gray-700">Sorteervolgorde</label>
-                            <input type="number" name="sort_order" id="sort_order" value="{{ old('sort_order', isset($product) ? $product->sort_order : '') }}" class="mt-1 block w-24 rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 text-sm" min="0" placeholder="Auto" />
-                            <p class="mt-1 text-xs text-gray-500">Laat leeg om automatisch op afmeting te sorteren</p>
                         </div>
 
                         <!-- Variants -->
@@ -102,7 +103,7 @@
                                             <input type="number" :name="'variants[' + index + '][low_stock_threshold]'" :id="'variant_threshold_' + index" x-model="variant.low_stock_threshold" min="0" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 text-sm" placeholder="0" />
                                         </div>
                                         <div class="pt-5">
-                                            <button type="button" @click="variants.splice(index, 1)" x-show="variants.length > 1" class="text-red-500 hover:text-red-700">
+                                            <button type="button" @click="removeVariant(index)" x-show="variants.length > 1" class="text-red-500 hover:text-red-700">
                                                 <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
                                                 </svg>
@@ -112,6 +113,11 @@
                                 </template>
                             </div>
                         </div>
+
+                        <!-- Hidden inputs for removed variants -->
+                        <template x-for="(id, index) in removedVariants" :key="'rm_' + index">
+                            <input type="hidden" :name="'remove_variants[' + index + ']'" :value="id" />
+                        </template>
 
                         <!-- Submit -->
                         <div class="flex items-center justify-end space-x-3 pt-4 border-t border-gray-200">
