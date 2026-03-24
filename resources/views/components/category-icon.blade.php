@@ -56,34 +56,27 @@
         </svg>
         @break
     @case('hea')
-        {{-- HEA breed-flens H-profiel: brede flenzen, korte lijf --}}
-        <svg viewBox="0 0 64 64" fill="currentColor" class="w-full h-full">
-            <rect x="8" y="6" width="48" height="8"/>
-            <rect x="8" y="50" width="48" height="8"/>
-            <rect x="26" y="14" width="12" height="36"/>
+        {{-- HEA breed-flens H-profiel doorsnede --}}
+        <svg viewBox="0 0 64 64" fill="none" stroke="currentColor" stroke-width="2.5" class="w-full h-full">
+            <path d="M8 6h48v8H36v36h20v8H8v-8h20V14H8z"/>
         </svg>
         @break
     @case('ipe')
-        {{-- IPE smal-flens I-profiel: smallere flenzen, hoger lijf --}}
-        <svg viewBox="0 0 64 64" fill="currentColor" class="w-full h-full">
-            <rect x="14" y="6" width="36" height="6"/>
-            <rect x="14" y="52" width="36" height="6"/>
-            <rect x="27" y="12" width="10" height="40"/>
+        {{-- IPE smal-flens I-profiel doorsnede --}}
+        <svg viewBox="0 0 64 64" fill="none" stroke="currentColor" stroke-width="2.5" class="w-full h-full">
+            <path d="M14 6h36v6H36v40h14v6H14v-6h14V12H14z"/>
         </svg>
         @break
     @case('t-profiel')
-        {{-- T-profiel: flens bovenaan, lijf naar beneden --}}
-        <svg viewBox="0 0 64 64" fill="currentColor" class="w-full h-full">
-            <rect x="8" y="8" width="48" height="8"/>
-            <rect x="26" y="16" width="12" height="40"/>
+        {{-- T-profiel doorsnede --}}
+        <svg viewBox="0 0 64 64" fill="none" stroke="currentColor" stroke-width="2.5" class="w-full h-full">
+            <path d="M8 8h48v8H38v40H26V16H8z"/>
         </svg>
         @break
     @case('u-profiel')
-        {{-- U-profiel: open kanaal naar boven --}}
-        <svg viewBox="0 0 64 64" fill="currentColor" class="w-full h-full">
-            <rect x="8" y="8" width="12" height="48"/>
-            <rect x="44" y="8" width="12" height="48"/>
-            <rect x="8" y="48" width="48" height="8"/>
+        {{-- U-profiel doorsnede --}}
+        <svg viewBox="0 0 64 64" fill="none" stroke="currentColor" stroke-width="2.5" class="w-full h-full">
+            <path d="M8 8h12v40h24V8h12v48H8z"/>
         </svg>
         @break
     @default
