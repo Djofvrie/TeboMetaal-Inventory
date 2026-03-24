@@ -59,90 +59,82 @@
 
             <!-- Mutations table -->
             <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">
-                <div class="overflow-x-auto">
-                    <table class="min-w-full divide-y divide-gray-200">
-                        <thead class="bg-gray-50">
+                <table class="min-w-full divide-y divide-gray-200 text-sm">
+                    <thead class="bg-gray-50">
+                        <tr>
+                            <th class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Datum</th>
+                            <th class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Product / Variant</th>
+                            <th class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Type</th>
+                            <th class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Lengte</th>
+                            <th class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Aantal</th>
+                            <th class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Notitie</th>
+                            <th class="px-4 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider"></th>
+                        </tr>
+                    </thead>
+                    <tbody class="bg-white divide-y divide-gray-200">
+                        @forelse ($mutations as $mutation)
                             <tr>
-                                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Datum</th>
-                                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Product</th>
-                                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Variant</th>
-                                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Type</th>
-                                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Lengte (m)</th>
-                                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Aantal</th>
-                                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Notitie</th>
-                                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Gebruiker</th>
-                                <th class="px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">Actie</th>
+                                <td class="px-4 py-3 whitespace-nowrap text-gray-500">
+                                    {{ $mutation->created_at->format('d-m H:i') }}
+                                </td>
+                                <td class="px-4 py-3 text-gray-900">
+                                    <div class="font-medium">{{ $mutation->variant->product->name ?? '-' }}</div>
+                                    <div class="text-xs text-gray-500">
+                                        {{ str_replace('.', ',', $mutation->variant->wall_thickness ?? '') }}mm{{ ($mutation->variant->quality ?? false) ? ' / ' . $mutation->variant->quality : '' }}
+                                        @if ($mutation->user)
+                                            &middot; {{ $mutation->user->name }}
+                                        @endif
+                                    </div>
+                                </td>
+                                <td class="px-4 py-3 whitespace-nowrap">
+                                    @switch($mutation->type)
+                                        @case('addition')
+                                            <span class="inline-flex items-center rounded-full bg-green-100 px-2 py-0.5 text-xs font-medium text-green-800">Toevoeging</span>
+                                            @break
+                                        @case('removal')
+                                            <span class="inline-flex items-center rounded-full bg-red-100 px-2 py-0.5 text-xs font-medium text-red-800">Afname</span>
+                                            @break
+                                        @case('correction')
+                                            <span class="inline-flex items-center rounded-full bg-yellow-100 px-2 py-0.5 text-xs font-medium text-yellow-800">Correctie</span>
+                                            @break
+                                        @case('inventory')
+                                            <span class="inline-flex items-center rounded-full bg-blue-100 px-2 py-0.5 text-xs font-medium text-blue-800">Inventarisatie</span>
+                                            @break
+                                        @default
+                                            <span class="inline-flex items-center rounded-full bg-gray-100 px-2 py-0.5 text-xs font-medium text-gray-800">{{ $mutation->type }}</span>
+                                    @endswitch
+                                </td>
+                                <td class="px-4 py-3 whitespace-nowrap text-gray-500">
+                                    {{ $mutation->length_mm > 0 ? str_replace('.', ',', round($mutation->length_mm / 1000, 2)) . ' m' : '-' }}
+                                </td>
+                                <td class="px-4 py-3 whitespace-nowrap text-gray-500">
+                                    {{ $mutation->quantity }}
+                                </td>
+                                <td class="px-4 py-3 text-gray-500 max-w-[200px] truncate">
+                                    {{ $mutation->note ?: '-' }}
+                                </td>
+                                <td class="px-4 py-3 whitespace-nowrap text-right">
+                                    @if ($mutation->variant)
+                                        <form method="POST" action="{{ route('admin.mutations.revert', $mutation) }}" class="inline" onsubmit="return confirm('Weet je zeker dat je deze mutatie ongedaan wilt maken?')">
+                                            @csrf
+                                            <button type="submit" class="text-amber-600 hover:text-amber-900" title="Ongedaan maken">
+                                                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 10h10a5 5 0 015 5v2M3 10l4-4M3 10l4 4"/>
+                                                </svg>
+                                            </button>
+                                        </form>
+                                    @endif
+                                </td>
                             </tr>
-                        </thead>
-                        <tbody class="bg-white divide-y divide-gray-200">
-                            @forelse ($mutations as $mutation)
-                                <tr>
-                                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-                                        {{ $mutation->created_at->format('d-m-Y H:i') }}
-                                    </td>
-                                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
-                                        {{ $mutation->variant->product->name ?? '-' }}
-                                        @if ($mutation->variant->product->dimension ?? false)
-                                            <span class="text-gray-500">{{ $mutation->variant->product->dimension }}</span>
-                                        @endif
-                                    </td>
-                                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-                                        {{ str_replace('.', ',', $mutation->variant->wall_thickness ?? '') }} mm
-                                        @if ($mutation->variant->quality ?? false)
-                                            / {{ $mutation->variant->quality }}
-                                        @endif
-                                    </td>
-                                    <td class="px-6 py-4 whitespace-nowrap text-sm">
-                                        @switch($mutation->type)
-                                            @case('addition')
-                                                <span class="inline-flex items-center rounded-full bg-green-100 px-2.5 py-0.5 text-xs font-medium text-green-800">Toevoeging</span>
-                                                @break
-                                            @case('removal')
-                                                <span class="inline-flex items-center rounded-full bg-red-100 px-2.5 py-0.5 text-xs font-medium text-red-800">Afname</span>
-                                                @break
-                                            @case('correction')
-                                                <span class="inline-flex items-center rounded-full bg-yellow-100 px-2.5 py-0.5 text-xs font-medium text-yellow-800">Correctie</span>
-                                                @break
-                                            @case('inventory')
-                                                <span class="inline-flex items-center rounded-full bg-blue-100 px-2.5 py-0.5 text-xs font-medium text-blue-800">Inventarisatie</span>
-                                                @break
-                                            @default
-                                                <span class="inline-flex items-center rounded-full bg-gray-100 px-2.5 py-0.5 text-xs font-medium text-gray-800">{{ $mutation->type }}</span>
-                                        @endswitch
-                                    </td>
-                                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-                                        {{ str_replace('.', ',', $mutation->length_mm / 1000) }}
-                                    </td>
-                                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-                                        {{ $mutation->quantity }}
-                                    </td>
-                                    <td class="px-6 py-4 text-sm text-gray-500 max-w-xs truncate">
-                                        {{ $mutation->note ?: '-' }}
-                                    </td>
-                                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-                                        {{ $mutation->user->name ?? '-' }}
-                                    </td>
-                                    <td class="px-6 py-4 whitespace-nowrap text-right text-sm">
-                                        @if ($mutation->variant)
-                                            <form method="POST" action="{{ route('admin.mutations.revert', $mutation) }}" class="inline" onsubmit="return confirm('Weet je zeker dat je deze mutatie ongedaan wilt maken?')">
-                                                @csrf
-                                                <button type="submit" class="text-amber-600 hover:text-amber-900 font-medium">
-                                                    Ongedaan maken
-                                                </button>
-                                            </form>
-                                        @endif
-                                    </td>
-                                </tr>
-                            @empty
-                                <tr>
-                                    <td colspan="9" class="px-6 py-4 text-center text-sm text-gray-500">
-                                        Geen mutaties gevonden.
-                                    </td>
-                                </tr>
-                            @endforelse
-                        </tbody>
-                    </table>
-                </div>
+                        @empty
+                            <tr>
+                                <td colspan="7" class="px-4 py-4 text-center text-sm text-gray-500">
+                                    Geen mutaties gevonden.
+                                </td>
+                            </tr>
+                        @endforelse
+                    </tbody>
+                </table>
 
                 @if ($mutations->hasPages())
                     <div class="px-6 py-4 border-t border-gray-200">
