@@ -11,8 +11,9 @@ class Category extends Model
 
     public function products(): HasMany
     {
+        // Strip Ø prefix for diameter dimensions, use REAL for decimals (e.g. Ø101.6)
         return $this->hasMany(Product::class)
-            ->orderByRaw("CAST(dimension AS INTEGER) ASC")
-            ->orderByRaw("CAST(CASE WHEN INSTR(dimension, 'x') > 0 THEN SUBSTR(dimension, INSTR(dimension, 'x') + 1) ELSE '0' END AS INTEGER) ASC");
+            ->orderByRaw("CAST(REPLACE(dimension, 'Ø', '') AS REAL) ASC")
+            ->orderByRaw("CAST(CASE WHEN INSTR(dimension, 'x') > 0 THEN SUBSTR(dimension, INSTR(dimension, 'x') + 1) ELSE '0' END AS REAL) ASC");
     }
 }
